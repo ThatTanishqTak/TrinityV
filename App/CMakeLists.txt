@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 3.20)
+project(App LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+add_executable(App)
+
+# Add source files
+file(GLOB_RECURSE APP_SRC "src/*.cpp" "src/*.h")
+target_sources(App PRIVATE ${APP_SRC})
+
+# Include Engine
+target_link_libraries(App PUBLIC Engine)
