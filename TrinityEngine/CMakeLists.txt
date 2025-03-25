@@ -4,6 +4,9 @@ project(TrinityEngine LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${OutputDir}/${PROJECT_NAME}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${OutputDir}/${PROJECT_NAME}")
+
 add_library(${PROJECT_NAME} STATIC 
     "src/Engine.cpp" "src/Engine.h" 
     "src/WindowsWindow/WindowsWindow.h" "src/WindowsWindow/WindowsWindow.cpp")
