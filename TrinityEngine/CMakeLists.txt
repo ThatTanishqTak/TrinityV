@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_library(${PROJECT_NAME} STATIC 
-    src/Engine.cpp 
-    src/Engine.h)
+    "src/Engine.cpp" "src/Engine.h" 
+    "src/WindowsWindow/WindowsWindow.h" "src/WindowsWindow/WindowsWindow.cpp")
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/src
