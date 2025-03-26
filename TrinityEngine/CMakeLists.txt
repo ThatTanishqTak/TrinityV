@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.15)
+﻿cmake_minimum_required(VERSION 3.20)
 project(TrinityEngine LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -9,7 +9,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${OutputDir}/${PROJECT_NAME}")
 
 add_library(${PROJECT_NAME} STATIC 
     "src/Engine.cpp" "src/Engine.h" 
-    "src/WindowsWindow/WindowsWindow.h" "src/WindowsWindow/WindowsWindow.cpp")
+    "src/WindowsWindow/WindowsWindow.h" "src/WindowsWindow/WindowsWindow.cpp"
+    "src/Renderer/Pipeline.h" "src/Renderer/Pipeline.cpp")
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/src
@@ -67,9 +68,3 @@ set(SHADER_SOURCES
 
 # Create shader target
 add_shaders(COMPILE_SHADER ${SHADER_SOURCES})
-
-# Add dependency to your main target
-add_dependencies(${PROJECT_NAME} COMPILE_SHADER)
-
-# Create shader output directory
-file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/shaders")
