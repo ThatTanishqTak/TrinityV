@@ -21,3 +21,55 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/TrinityEngine/vendor/GLFW/lib-vc2022/glfw3.lib
     $ENV{VULKAN_SDK}/Lib/vulkan-1.lib
     opengl32.lib)
+
+message("Vulkan GLSLC path: ${Vulkan_GLSLC_EXECUTABLE}")
+
+function(add_shaders TARGET_NAME)
+    set(SHADER_SOURCE_FILES ${ARGN})
+    
+    list(LENGTH SHADER_SOURCE_FILES FILE_COUNT)
+    if(FILE_COUNT EQUAL 0)
+        message(FATAL_ERROR "Cannot create a shaders target without any source files")
+    endif()
+
+    set(SHADER_COMMANDS)
+    set(SHADER_PRODUCTS)
+
+    foreach(SHADER_SOURCE IN LISTS SHADER_SOURCE_FILES)
+        cmake_path(ABSOLUTE_PATH SHADER_SOURCE NORMALIZE)
+        cmake_path(GET SHADER_SOURCE FILENAME SHADER_NAME)
+        
+        list(APPEND SHADER_COMMANDS COMMAND)
+        list(APPEND SHADER_COMMANDS ${Vulkan_GLSLC_EXECUTABLE})
+        list(APPEND SHADER_COMMANDS "${SHADER_SOURCE}")
+        list(APPEND SHADER_COMMANDS "-o")
+        list(APPEND SHADER_COMMANDS "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/src/Shader/${SHADER_NAME}.spv")
+
+        list(APPEND SHADER_PRODUCTS "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/src/Shader/${SHADER_NAME}.spv")
+    endforeach()
+
+    add_custom_target(${TARGET_NAME} ALL
+        ${SHADER_COMMANDS}
+        COMMENT "Compiling Shaders [${TARGET_NAME}]"
+        SOURCES ${SHADER_SOURCE_FILES}
+        BYPRODUCTS ${SHADER_PRODUCTS}
+    )
+endfunction()
+
+# Find Vulkan SDK properly
+find_package(Vulkan REQUIRED)
+
+# Set shader sources
+set(SHADER_SOURCES 
+    "src/Shader/Shader.vert"
+    "src/Shader/Shader.frag"
+)
+
+# Create shader target
+add_shaders(COMPILE_SHADER ${SHADER_SOURCES})
+
+# Add dependency to your main target
+add_dependencies(${PROJECT_NAME} COMPILE_SHADER)
+
+# Create shader output directory
+file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/shaders")

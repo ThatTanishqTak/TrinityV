@@ -1,5 +1,7 @@
 .vs/
+.vscode/
 out/
 bin/
 build/
 CMakePresets.json
+**.spv
