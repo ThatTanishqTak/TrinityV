@@ -12,12 +12,7 @@ set(ARCH "")
 # Get system name
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
     set(OS "windows")
-    # Get architecture
-    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        set(ARCH "x64")
-    else()
-        set(ARCH "x32")
-    endif()
+    set(ARCH "x86_64")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
     set(OS "macos")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")

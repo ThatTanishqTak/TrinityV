@@ -15,6 +15,6 @@ namespace Engine
 
 	private:
 		WindowsWindow m_WindowsWindow;
-		Pipeline m_Pipeline{ "../Shader/Shader.vert.spv", "../Shader/Shader.frag.spv" };
+		Pipeline m_Pipeline{ "Shaders/Shader.vert.spv", "Shaders/Shader.frag.spv" };
 	};
 }
