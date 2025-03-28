@@ -21,7 +21,7 @@ endif()
 
 # Combine into a single variable
 set(PLATFORM "${OS}-${ARCH}")
-set(OutputDir "${CMAKE_SOURCE_DIR}/bin/${PLATFORM}-${CMAKE_BUILD_TYPE}/${PROJECT_NAME}")
+set(OutputDir "${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}-${PLATFORM}/${PROJECT_NAME}")
 
 add_subdirectory(TrinityEngine)
 add_subdirectory(TrinityApp)

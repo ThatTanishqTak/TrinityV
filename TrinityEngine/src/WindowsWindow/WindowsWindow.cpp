@@ -1,29 +1,34 @@
 #include "WindowsWindow.h"
 
+#include <stdexcept>
+
 namespace Engine
 {
-    void WindowsWindow::Init()
-    {
-        glfwInit();
+	WindowsWindow::WindowsWindow(int width, int height, std::string title) : WIDTH(width), HEIGHT(height), m_WindowName(title)
+	{
+		InitWindow();
+	}
 
-        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-        GLFWwindow* window = glfwCreateWindow(1920, 1080, "TrinityV", nullptr, nullptr);
+	WindowsWindow::~WindowsWindow()
+	{
+		glfwDestroyWindow(m_Window);
+		glfwTerminate();
+	}
 
-        m_Window = window;
-    }
+	void WindowsWindow::CreateWindowSurface(VkInstance instance, VkSurfaceKHR* surface)
+	{
+		if (glfwCreateWindowSurface(instance, m_Window, nullptr, surface) != VK_SUCCESS)
+		{
+			throw std::runtime_error("Failed to create window surface");
+		}
+	}
 
-    void WindowsWindow::Shutdown()
-    {
-        glfwDestroyWindow(m_Window);
+	void WindowsWindow::InitWindow()
+	{
+		glfwInit();
+		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-        glfwTerminate();
-    }
-
-    void WindowsWindow::Run()
-    {
-        while (!glfwWindowShouldClose(m_Window))
-        {
-            glfwPollEvents();
-        }
-    }
+		m_Window = glfwCreateWindow(WIDTH, HEIGHT, m_WindowName.c_str(), nullptr, nullptr);
+	}
 }

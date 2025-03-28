@@ -2,18 +2,11 @@
 
 namespace Engine
 {
-	Engine::Engine()
-	{
-		m_WindowsWindow.Init();
-	}
-
-	Engine::~Engine()
-	{
-		m_WindowsWindow.Shutdown();
-	}
-
 	void Engine::Run()
 	{
-		m_WindowsWindow.Run();
+		while (!m_WindowsWindow.ShouldClose())
+		{
+			glfwPollEvents();
+		}
 	}
 }

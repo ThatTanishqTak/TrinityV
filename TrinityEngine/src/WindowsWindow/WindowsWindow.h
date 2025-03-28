@@ -3,24 +3,31 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
-#define GLM_FORCE_RADIANS
-#define GLM_FORCE_DEPTH_ZERO_TO_ONE
-#include <vec4.hpp>
-#include <mat4x4.hpp>
-
-#include <iostream>
+#include <string>
 
 namespace Engine
 {
 	class WindowsWindow
 	{
 	public:
-		void Init();
-		void Shutdown();
+		WindowsWindow(int width, int height, std::string title);
+		~WindowsWindow();
 
-		void Run();
+		WindowsWindow(const WindowsWindow&) = delete;
+		WindowsWindow &operator=(const WindowsWindow&) = delete;
 
-	public:
+		void CreateWindowSurface(VkInstance instance, VkSurfaceKHR* surface);
+
+		bool ShouldClose() { return glfwWindowShouldClose(m_Window); }
+
+	private:
+		const int WIDTH;
+		const int HEIGHT;
+
+		std::string m_WindowName;
 		GLFWwindow* m_Window;
+
+	private:
+		void InitWindow();
 	};
 }

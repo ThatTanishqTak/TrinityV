@@ -10,7 +10,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${OutputDir}/${PROJECT_NAME}")
 add_library(${PROJECT_NAME} STATIC 
     "src/Engine.cpp" "src/Engine.h" 
     "src/WindowsWindow/WindowsWindow.h" "src/WindowsWindow/WindowsWindow.cpp"
-    "src/Renderer/Pipeline.h" "src/Renderer/Pipeline.cpp")
+    "src/Renderer/Pipeline.h" "src/Renderer/Pipeline.cpp"
+    "src/Device/Device.h" "src/Device/Device.cpp")
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/src
@@ -22,8 +23,6 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/TrinityEngine/vendor/GLFW/lib-vc2022/glfw3.lib
     $ENV{VULKAN_SDK}/Lib/vulkan-1.lib
     opengl32.lib)
-
-message("Vulkan GLSLC path: ${Vulkan_GLSLC_EXECUTABLE}")
 
 function(add_shaders TARGET_NAME)
     set(SHADER_SOURCE_FILES ${ARGN})
@@ -57,19 +56,15 @@ function(add_shaders TARGET_NAME)
     )
 endfunction()
 
-# Find Vulkan SDK properly
 find_package(Vulkan REQUIRED)
 
-# Set shader sources
 set(SHADER_SOURCES 
     "src/Shader/Shader.vert"
     "src/Shader/Shader.frag"
 )
 
-# Create shader target
 add_shaders(COMPILE_SHADER ${SHADER_SOURCES})
 
-# Add this after your existing add_shaders call
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
