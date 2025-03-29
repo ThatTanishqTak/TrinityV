@@ -4,8 +4,8 @@ project(TrinityEngine LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${OutputDir}/${PROJECT_NAME}")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${OutputDir}/${PROJECT_NAME}")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${OutputDir}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${OutputDir}")
 
 add_library(${PROJECT_NAME} STATIC 
     "src/Engine.cpp" "src/Engine.h" 
@@ -43,9 +43,9 @@ function(add_shaders TARGET_NAME)
         list(APPEND SHADER_COMMANDS ${Vulkan_GLSLC_EXECUTABLE})
         list(APPEND SHADER_COMMANDS "${SHADER_SOURCE}")
         list(APPEND SHADER_COMMANDS "-o")
-        list(APPEND SHADER_COMMANDS "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/src/Shader/${SHADER_NAME}.spv")
+        list(APPEND SHADER_COMMANDS "${OutputDir}/Shaders/${SHADER_NAME}.spv")
 
-        list(APPEND SHADER_PRODUCTS "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/src/Shader/${SHADER_NAME}.spv")
+        list(APPEND SHADER_PRODUCTS "${OutputDir}/Shaders/${SHADER_NAME}.spv")
     endforeach()
 
     add_custom_target(${TARGET_NAME} ALL
@@ -64,11 +64,3 @@ set(SHADER_SOURCES
 )
 
 add_shaders(COMPILE_SHADER ${SHADER_SOURCES})
-
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/Shader
-        ${OutputDir}/TrinityApp/Shaders
-    COMMENT "Copying shader files to output directory"
-)

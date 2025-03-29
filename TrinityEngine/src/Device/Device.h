@@ -23,6 +23,7 @@ namespace Engine
 
 		bool graphicsFamilyHasValue = false;
 		bool presentFamilyHasValue = false;
+		
 		bool IsComplete() { return graphicsFamilyHasValue && presentFamilyHasValue; }
 	};
 
@@ -68,6 +69,21 @@ namespace Engine
 		VkPhysicalDeviceProperties properties;
 
 	private:
+		VkInstance m_Instance;
+		VkDebugUtilsMessengerEXT m_DebugMessenger;
+		VkPhysicalDevice m_PhysicalDevice = VK_NULL_HANDLE;
+		WindowsWindow& m_Window;
+		VkCommandPool m_CommandPool;
+
+		VkDevice m_Device;
+		VkSurfaceKHR m_Surface;
+		VkQueue m_GraphicsQueue;
+		VkQueue m_PresentQueue;
+
+		const std::vector<const char*> m_ValidationLayers = { "VK_LAYER_KHRONOS_validation" };
+		const std::vector<const char*> m_DeviceExtensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+
+	private:
 		void CreateInstance();
 		void SetupDebugMessenger();
 		void CreateSurface();
@@ -84,19 +100,5 @@ namespace Engine
 		void HasGflwRequiredInstanceExtensions();
 		bool CheckDeviceExtensionSupport(VkPhysicalDevice device);
 		SwapChainSupportDetails QuerySwapChainSupport(VkPhysicalDevice device);
-
-		VkInstance m_Instance;
-		VkDebugUtilsMessengerEXT m_DebugMessenger;
-		VkPhysicalDevice m_PhysicalDevice = VK_NULL_HANDLE;
-		WindowsWindow& m_Window;
-		VkCommandPool m_CommandPool;
-
-		VkDevice m_Device;
-		VkSurfaceKHR m_Surface;
-		VkQueue m_GraphicsQueue;
-		VkQueue m_PresentQueue;
-
-		const std::vector<const char*> m_ValidationLayers = { "VK_LAYER_KHRONOS_validation" };
-		const std::vector<const char*> m_DeviceExtensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
 	};
 }
