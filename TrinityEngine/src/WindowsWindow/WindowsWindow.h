@@ -13,12 +13,11 @@ namespace Engine
 		WindowsWindow(int width, int height, std::string title);
 		~WindowsWindow();
 
-		WindowsWindow(const WindowsWindow&) = delete;
-		WindowsWindow &operator=(const WindowsWindow&) = delete;
-
 		void CreateWindowSurface(VkInstance instance, VkSurfaceKHR* surface);
 
 		bool ShouldClose() { return glfwWindowShouldClose(m_Window); }
+
+		VkExtent2D GetExtent() { return { static_cast<uint32_t>(WIDTH), static_cast<uint32_t>(HEIGHT) }; }
 
 	private:
 		const int WIDTH;

@@ -5,16 +5,16 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${OutputDir}")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${OutputDir}")
 
 add_library(${PROJECT_NAME} STATIC 
     "src/Engine.cpp" "src/Engine.h" 
     "src/WindowsWindow/WindowsWindow.h" "src/WindowsWindow/WindowsWindow.cpp"
     "src/Renderer/Pipeline.h" "src/Renderer/Pipeline.cpp"
+    "src/Renderer/Swapchain.h" "src/Renderer/Swapchain.cpp"
     "src/Device/Device.h" "src/Device/Device.cpp")
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/TrinityEngine/src
     ${CMAKE_SOURCE_DIR}/TrinityEngine/vendor/GLFW/include
     ${CMAKE_SOURCE_DIR}/TrinityEngine/vendor/glm
     $ENV{VULKAN_SDK}/Include)

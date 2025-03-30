@@ -1,4 +1,4 @@
-#include <../TrinityEngine/src/Engine.h>
+#include <Engine.h>
 
 int main()
 {
