@@ -59,8 +59,8 @@ endfunction()
 find_package(Vulkan REQUIRED)
 
 set(SHADER_SOURCES 
-    "src/Shader/Shader.vert"
-    "src/Shader/Shader.frag"
+    "shaders/Shader.vert"
+    "shaders/Shader.frag"
 )
 
 add_shaders(COMPILE_SHADER ${SHADER_SOURCES})

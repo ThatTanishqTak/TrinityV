@@ -37,7 +37,7 @@ namespace Engine
         VkFormat FindDepthFormat();
 
         VkResult AcquireNextImage(uint32_t* ImageIndex);
-        VkResult SubmitCommandBuffers(const VkCommandBuffer* buffers, uint32_t* ImageIndex);
+        VkResult SubmitCommandBuffers(const VkCommandBuffer* commandBuffers, uint32_t* ImageIndex);
 
     private:
         VkFormat m_SwapChainImageFormat;

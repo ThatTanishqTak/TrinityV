@@ -19,6 +19,11 @@ namespace Engine
 		vkDestroyPipeline(m_Device.GetDevice(), m_GraphicsPipeline, nullptr);
 	}
 
+	void Pipeline::Bind(VkCommandBuffer commandBuffer)
+	{
+		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_GraphicsPipeline);
+	}
+
 	void Pipeline::DefaultPipelineConfigInfo(PipelineConfigInfo& config, uint32_t width, uint32_t height)
 	{
 		config.inputAssemblyInfo.sType					  = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;

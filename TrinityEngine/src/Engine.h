@@ -2,6 +2,7 @@
 
 #include "WindowsWindow/WindowsWindow.h"
 #include "Device/Device.h"
+
 #include "Renderer/Swapchain.h"
 #include "Renderer/Pipeline.h"
 
@@ -26,7 +27,7 @@ namespace Engine
 		Engine& operator=(const Engine&) = delete;
 
 	private:
-		WindowsWindow m_WindowsWindow{ 1920, 1080, "TrinityV" };
+		WindowsWindow m_WindowsWindow{ WIDTH, HEIGHT, "TrinityV" };
 		Device m_Device{ m_WindowsWindow };
 		SwapChain m_Swapchain{ m_Device, m_WindowsWindow.GetExtent() };
 		
@@ -38,6 +39,7 @@ namespace Engine
 		void CreatePipelineLayout();
 		void CreatePipeline();
 		void CreateCommandBuffer();
+		
 		void DrawFrame();
 	};
 }

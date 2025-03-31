@@ -8,7 +8,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${OutputDir}")
 
 add_executable(TrinityApp)
 
-file(GLOB_RECURSE APP_SRC "src/*.cpp" "src/*.h")
+file(GLOB_RECURSE APP_SRC "src/EntryPoint.cpp")
 target_sources(TrinityApp PRIVATE ${APP_SRC})
 
 target_link_libraries(TrinityApp PUBLIC TrinityEngine)

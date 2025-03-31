@@ -68,7 +68,7 @@ namespace Engine
         return result;
     }
 
-    VkResult SwapChain::SubmitCommandBuffers(const VkCommandBuffer* buffers, uint32_t* imageIndex)
+    VkResult SwapChain::SubmitCommandBuffers(const VkCommandBuffer* commandBuffer, uint32_t* imageIndex)
     {
         if (m_ImagesInFlight[*imageIndex] != VK_NULL_HANDLE)
         {
@@ -87,7 +87,7 @@ namespace Engine
         submitInfo.pWaitDstStageMask = waitStages;
 
         submitInfo.commandBufferCount = 1;
-        submitInfo.pCommandBuffers = buffers;
+        submitInfo.pCommandBuffers = commandBuffer;
 
         VkSemaphore signalSemaphores[] = { m_RenderFinishedSemaphores[currentFrame] };
         submitInfo.signalSemaphoreCount = 1;
