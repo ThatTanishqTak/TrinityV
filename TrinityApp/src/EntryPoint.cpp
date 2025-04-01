@@ -2,9 +2,9 @@
 
 int main()
 {
-	Engine::Engine engine;
+	Engine::Engine engine; // Initialize the engine
 
-	engine.Run();
+	engine.Run(); // Main run function
 
-	return 0;
+	return 0; // Exit code
 }

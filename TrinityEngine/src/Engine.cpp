@@ -35,9 +35,9 @@ namespace Engine
 	{
 		std::vector<Model::Vertex> vertices
 		{
-			{ {  0.0f, -0.5f } },
-			{ {  0.5f,  0.5f } },
-			{ { -0.5f,  0.5f } }
+			{ {  0.0f, -0.5f }, { 1, 0, 0 }, },
+			{ {  0.5f,  0.5f }, { 0, 1, 0 }, },
+			{ { -0.5f,  0.5f }, { 0, 0, 1 } }
 		};
 
 		m_Model = std::make_unique<Model>(m_Device, vertices);

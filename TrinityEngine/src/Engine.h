@@ -32,10 +32,12 @@ namespace Engine
 		Device m_Device{ m_WindowsWindow };
 		SwapChain m_Swapchain{ m_Device, m_WindowsWindow.GetExtent() };
 		
-		std::unique_ptr<Pipeline> m_Pipeline;
 		VkPipelineLayout m_PipelineLayout;
-		std::vector<VkCommandBuffer> m_CommandBuffers;
+
+		std::unique_ptr<Pipeline> m_Pipeline;
 		std::unique_ptr<Model> m_Model;
+		
+		std::vector<VkCommandBuffer> m_CommandBuffers;
 
 	private:
 		void LoadModel();
