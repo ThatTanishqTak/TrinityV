@@ -12,6 +12,19 @@ namespace Engine
 {
     SwapChain::SwapChain(Device& deviceRef, VkExtent2D extent) : m_Device{ deviceRef }, m_WindowExtent{ extent }
     {
+        Init();
+    }
+
+    SwapChain::SwapChain(Device& deviceRef, VkExtent2D extent, std::shared_ptr<SwapChain> previousSwapChain)
+        : m_Device{ deviceRef }, m_WindowExtent{ extent }, m_OldSwapChain{ previousSwapChain }
+    {
+        Init();
+
+        m_OldSwapChain = nullptr;
+    }
+
+    void SwapChain::Init()
+    {
         CreateSwapChain();
         CreateImageViews();
         CreateRenderPass();
@@ -166,7 +179,7 @@ namespace Engine
         createInfo.presentMode = presentMode;
         createInfo.clipped = VK_TRUE;
 
-        createInfo.oldSwapchain = VK_NULL_HANDLE;
+        createInfo.oldSwapchain = m_OldSwapChain == nullptr ? VK_NULL_HANDLE : m_OldSwapChain->m_SwapChain;
 
         if (vkCreateSwapchainKHR(m_Device.GetDevice(), &createInfo, nullptr, &m_SwapChain) != VK_SUCCESS)
         {

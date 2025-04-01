@@ -11,7 +11,7 @@ namespace Engine
 
 		CreatePipelineLayout();
 		RecreateSwapChain();
-		CreateCommandBuffer();
+		CreateCommandBuffers();
 	}
 
 	Engine::~Engine()
@@ -61,7 +61,7 @@ namespace Engine
 	void Engine::CreatePipeline()
 	{
 		PipelineConfigInfo pipelineConfig{};
-		Pipeline::DefaultPipelineConfigInfo(pipelineConfig, m_Swapchain->GetWidth(), m_Swapchain->GetHeight());
+		Pipeline::DefaultPipelineConfigInfo(pipelineConfig);
 
 		pipelineConfig.renderPass = m_Swapchain->GetRenderPass();
 		pipelineConfig.pipelineLayout = m_PipelineLayout;
@@ -80,12 +80,28 @@ namespace Engine
 		}
 
 		vkDeviceWaitIdle(m_Device.GetDevice());
-		m_Swapchain = std::make_unique<SwapChain>(m_Device, extent);
+
+		if (m_Swapchain == nullptr)
+		{
+			m_Swapchain = std::make_unique<SwapChain>(m_Device, extent);
+		}
+
+		else
+		{
+			m_Swapchain = std::make_unique<SwapChain>(m_Device, extent, std::move(m_Swapchain));
+
+			if (m_Swapchain->GetImageCount() != m_CommandBuffers.size())
+			{
+				FreeCommandBuffers();
+
+				CreateCommandBuffers();
+			}
+		}
 
 		CreatePipeline();
 	}
 
-	void Engine::CreateCommandBuffer()
+	void Engine::CreateCommandBuffers()
 	{
 		m_CommandBuffers.resize(m_Swapchain->GetImageCount());
 
@@ -99,8 +115,13 @@ namespace Engine
 		{
 			throw std::runtime_error("Failed to allocate command buffer");
 		}
+	}
 
+	void Engine::FreeCommandBuffers()
+	{
+		vkFreeCommandBuffers(m_Device.GetDevice(), m_Device.GetCommandPool(), static_cast<uint32_t>(m_CommandBuffers.size()), m_CommandBuffers.data());
 
+		m_CommandBuffers.clear();
 	}
 
 	void Engine::RecordCommandBuffer(int imageIndex)
@@ -128,6 +149,18 @@ namespace Engine
 		renderPassInfo.pClearValues = clearvValues.data();
 
 		vkCmdBeginRenderPass(m_CommandBuffers[imageIndex], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+		VkViewport viewport{};
+		viewport.x = 0.0f;
+		viewport.y = 0.0f;
+		viewport.width = static_cast<float>(m_Swapchain->GetSwapChainExtent().width);
+		viewport.height = static_cast<float>(m_Swapchain->GetSwapChainExtent().height);
+		viewport.minDepth = 0.0f;
+		viewport.maxDepth = 1.0f;
+
+		VkRect2D scissor{ {0, 0}, m_Swapchain->GetSwapChainExtent() };
+		vkCmdSetViewport(m_CommandBuffers[imageIndex], 0, 1, &viewport);
+		vkCmdSetScissor(m_CommandBuffers[imageIndex], 0, 1, &scissor);
 
 		m_Pipeline->Bind(m_CommandBuffers[imageIndex]);
 

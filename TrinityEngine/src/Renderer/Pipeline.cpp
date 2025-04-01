@@ -26,27 +26,17 @@ namespace Engine
 		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_GraphicsPipeline);
 	}
 
-	void Pipeline::DefaultPipelineConfigInfo(PipelineConfigInfo& config, uint32_t width, uint32_t height)
+	void Pipeline::DefaultPipelineConfigInfo(PipelineConfigInfo& config)
 	{
 		config.inputAssemblyInfo.sType					  = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
 		config.inputAssemblyInfo.topology				  = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
 		config.inputAssemblyInfo.primitiveRestartEnable   = VK_FALSE;
 
-		config.viewport.x	       = 0.0f;
-		config.viewport.y	       = 0.0f;
-		config.viewport.width	   = static_cast<float>(width);
-		config.viewport.height	   = static_cast<float>(height);
-		config.viewport.minDepth   = 0.0f;
-		config.viewport.maxDepth   = 1.0f;
-
-		config.scissor.offset   = { 0, 0 };
-		config.scissor.extent   = { width, height };
-
-		config.viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-		config.viewportInfo.viewportCount = 1;
-		config.viewportInfo.pViewports = &config.viewport;
-		config.viewportInfo.scissorCount = 1;
-		config.viewportInfo.pScissors = &config.scissor;
+		config.viewportInfo.sType           = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+		config.viewportInfo.viewportCount   = 1;
+		config.viewportInfo.pViewports      = nullptr;
+		config.viewportInfo.scissorCount    = 1;
+		config.viewportInfo.pScissors       = nullptr;
 
 		config.rasterizationInfo.sType                     = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
 		config.rasterizationInfo.depthClampEnable          = VK_FALSE;
@@ -97,6 +87,12 @@ namespace Engine
 		config.depthStencilInfo.stencilTestEnable       = VK_FALSE;
 		config.depthStencilInfo.front                   = {};        // Optional
 		config.depthStencilInfo.back                    = {};        // Optional
+
+		config.dynamicStateEnables                  = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
+		config.dynamicStateInfo.sType               = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+		config.dynamicStateInfo.pDynamicStates      = config.dynamicStateEnables.data();
+		config.dynamicStateInfo.dynamicStateCount   = static_cast<uint32_t>(config.dynamicStateEnables.size());
+		config.depthStencilInfo.flags               = 0;
 	}
 
 	std::vector<char> Pipeline::ReadFile(const std::string& filePath)
@@ -168,7 +164,7 @@ namespace Engine
 		pipelineInfo.pMultisampleState     = &info.multisampleInfo;
 		pipelineInfo.pColorBlendState      = &info.colorBlendInfo;
 		pipelineInfo.pDepthStencilState    = &info.depthStencilInfo;
-		pipelineInfo.pDynamicState         = nullptr;
+		pipelineInfo.pDynamicState         = &info.dynamicStateInfo;
 
 		pipelineInfo.layout       = info.pipelineLayout;
 		pipelineInfo.renderPass   = info.renderPass;

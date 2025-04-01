@@ -44,7 +44,8 @@ namespace Engine
 
 		void CreatePipelineLayout();
 		void CreatePipeline();
-		void CreateCommandBuffer();
+		void CreateCommandBuffers();
+		void FreeCommandBuffers();
 		
 		void DrawFrame();
 

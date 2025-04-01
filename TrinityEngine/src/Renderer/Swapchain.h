@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace Engine
 {
@@ -15,6 +16,7 @@ namespace Engine
         static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
 
         SwapChain(Device& deviceRef, VkExtent2D windowExtent);
+        SwapChain(Device& deviceRef, VkExtent2D windowExtent, std::shared_ptr<SwapChain> perviousSwapChain);
         ~SwapChain();
 
         SwapChain(const SwapChain&) = delete;
@@ -56,6 +58,7 @@ namespace Engine
         VkExtent2D m_WindowExtent;
 
         VkSwapchainKHR m_SwapChain;
+        std::shared_ptr<SwapChain> m_OldSwapChain;
 
         std::vector<VkSemaphore> m_ImageAvailableSemaphores;
         std::vector<VkSemaphore> m_RenderFinishedSemaphores;
@@ -64,6 +67,8 @@ namespace Engine
         size_t currentFrame = 0;
 
     private:
+        void Init();
+
         void CreateSwapChain();
         void CreateImageViews();
         void CreateDepthResources();
