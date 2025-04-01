@@ -30,14 +30,14 @@ namespace Engine
 	private:
 		WindowsWindow m_WindowsWindow{ WIDTH, HEIGHT, "TrinityV" };
 		Device m_Device{ m_WindowsWindow };
-		SwapChain m_Swapchain{ m_Device, m_WindowsWindow.GetExtent() };
+		std::unique_ptr<SwapChain> m_Swapchain;
+		std::unique_ptr<Pipeline> m_Pipeline;
 		
 		VkPipelineLayout m_PipelineLayout;
 
-		std::unique_ptr<Pipeline> m_Pipeline;
-		std::unique_ptr<Model> m_Model;
-		
 		std::vector<VkCommandBuffer> m_CommandBuffers;
+		
+		std::unique_ptr<Model> m_Model;
 
 	private:
 		void LoadModel();
@@ -47,5 +47,8 @@ namespace Engine
 		void CreateCommandBuffer();
 		
 		void DrawFrame();
+
+		void RecreateSwapChain();
+		void RecordCommandBuffer(int imageIndex);
 	};
 }

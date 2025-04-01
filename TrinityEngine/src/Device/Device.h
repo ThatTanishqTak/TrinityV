@@ -40,7 +40,7 @@ namespace Engine
 		~Device();
 
 		Device(const Device&) = delete;
-		void operator=(const Device&) = delete;
+		Device& operator=(const Device&) = delete;
 		Device(Device&&) = delete;
 		Device& operator=(Device&&) = delete;
 

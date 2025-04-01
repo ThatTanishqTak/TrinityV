@@ -16,17 +16,24 @@ namespace Engine
 		void CreateWindowSurface(VkInstance instance, VkSurfaceKHR* surface);
 
 		bool ShouldClose() { return glfwWindowShouldClose(m_Window); }
+		bool WasWindowResized() { return m_FrambufferResize; }
 
-		VkExtent2D GetExtent() { return { static_cast<uint32_t>(WIDTH), static_cast<uint32_t>(HEIGHT) }; }
+		void ResetWindowResizeFlag() { m_FrambufferResize = false; }
+
+		VkExtent2D GetExtent() { return { static_cast<uint32_t>(m_Width), static_cast<uint32_t>(m_Height) }; }
 
 	private:
-		const int WIDTH;
-		const int HEIGHT;
+		int m_Width;
+		int m_Height;
+
+		bool m_FrambufferResize = false;
 
 		std::string m_WindowName;
 		GLFWwindow* m_Window;
 
 	private:
 		void InitWindow();
+
+		static void FrameBufferResizeCallback(GLFWwindow* window, int width, int height);
 	};
 }

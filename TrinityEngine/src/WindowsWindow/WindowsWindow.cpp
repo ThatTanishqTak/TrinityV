@@ -4,7 +4,7 @@
 
 namespace Engine
 {
-	WindowsWindow::WindowsWindow(int width, int height, std::string title) : WIDTH(width), HEIGHT(height), m_WindowName(title)
+	WindowsWindow::WindowsWindow(int width, int height, std::string title) : m_Width(width), m_Height(height), m_WindowName(title)
 	{
 		InitWindow();
 	}
@@ -27,8 +27,18 @@ namespace Engine
 	{
 		glfwInit();
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
-		m_Window = glfwCreateWindow(WIDTH, HEIGHT, m_WindowName.c_str(), nullptr, nullptr);
+		m_Window = glfwCreateWindow(m_Width, m_Height, m_WindowName.c_str(), nullptr, nullptr);
+		glfwSetWindowUserPointer(m_Window, this);
+		glfwSetFramebufferSizeCallback(m_Window, FrameBufferResizeCallback);
+	}
+
+	void WindowsWindow::FrameBufferResizeCallback(GLFWwindow* window, int width, int height)
+	{
+		auto localWindow = reinterpret_cast<WindowsWindow*>(glfwGetWindowUserPointer(window));
+		localWindow->m_FrambufferResize = true;
+		localWindow->m_Width = width;
+		localWindow->m_Height = height;
 	}
 }

@@ -18,7 +18,7 @@ namespace Engine
         ~SwapChain();
 
         SwapChain(const SwapChain&) = delete;
-        void operator=(const SwapChain&) = delete;
+        SwapChain operator=(const SwapChain&) = delete;
 
         VkFramebuffer GetFrameBuffer(int index) { return m_SwapChainFramebuffers[index]; }
         VkRenderPass GetRenderPass() { return m_RenderPass; }
