@@ -11,6 +11,7 @@ add_library(${PROJECT_NAME} STATIC
     "src/WindowsWindow/WindowsWindow.h" "src/WindowsWindow/WindowsWindow.cpp"
     "src/Renderer/Pipeline.h" "src/Renderer/Pipeline.cpp"
     "src/Renderer/Swapchain.h" "src/Renderer/Swapchain.cpp"
+    "src/Renderer/Model.h" "src/Renderer/Model.cpp"
     "src/Device/Device.h" "src/Device/Device.cpp")
 
 target_include_directories(${PROJECT_NAME} PUBLIC

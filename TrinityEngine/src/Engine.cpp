@@ -7,6 +7,8 @@ namespace Engine
 {
 	Engine::Engine()
 	{
+		LoadModel();
+
 		CreatePipelineLayout();
 		CreatePipeline();
 		CreateCommandBuffer();
@@ -27,6 +29,18 @@ namespace Engine
 		}
 
 		vkDeviceWaitIdle(m_Device.GetDevice());
+	}
+
+	void Engine::LoadModel()
+	{
+		std::vector<Model::Vertex> vertices
+		{
+			{ {  0.0f, -0.5f } },
+			{ {  0.5f,  0.5f } },
+			{ { -0.5f,  0.5f } }
+		};
+
+		m_Model = std::make_unique<Model>(m_Device, vertices);
 	}
 
 	void Engine::CreatePipelineLayout()
@@ -98,7 +112,8 @@ namespace Engine
 
 			m_Pipeline->Bind(m_CommandBuffers[i]);
 			
-			vkCmdDraw(m_CommandBuffers[i], 3, 1, 0, 0);
+			m_Model->Bind(m_CommandBuffers[i]);
+			m_Model->Draw(m_CommandBuffers[i]);
 
 			vkCmdEndRenderPass(m_CommandBuffers[i]);
 
